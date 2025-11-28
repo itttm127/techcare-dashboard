@@ -9,30 +9,7 @@ interface PatientSidebarProps {
   onSelectPatient: (patient: Patient) => void;
 }
 
-// Fallback images for patients without profile_picture
-const patientImages: { [key: string]: string } = {
-  'Emily Williams': '/assets/imgs/patients/Layer 8.png',
-  'Ryan Johnson': '/assets/imgs/patients/Layer 1.png',
-  'Brandon Mitchell': '/assets/imgs/patients/Layer 3.png',
-  'Jessica Taylor': '/assets/imgs/patients/Layer 2.png',
-  'Samantha Johnson': '/assets/imgs/patients/Layer 6.png',
-  'Ashley Martinez': '/assets/imgs/patients/Layer 12.png',
-  'Olivia Brown': '/assets/imgs/patients/Layer 10.png',
-  'Tyler Davis': '/assets/imgs/patients/Layer 9.png',
-  'Kevin Anderson': '/assets/imgs/patients/Layer 4.png',
-  'Dylan Thompson': '/assets/imgs/patients/Layer 5.png',
-  'Nathan Evans': '/assets/imgs/patients/Layer 7.png',
-  'Mike Nolan': '/assets/imgs/patients/pexels-photo-1222271.png',
-};
-
 export default function PatientSidebar({ patients, selectedPatient, onSelectPatient }: PatientSidebarProps) {
-  const getPatientImage = (patient: Patient): string => {
-    // Use profile_picture from API if available, otherwise use fallback
-    if (patient.profile_picture) {
-      return patient.profile_picture;
-    }
-    return patientImages[patient.name] || '/assets/imgs/patients/Layer 2.png';
-  };
 
   const getGenderAndAge = (patient: Patient): string => {
     const gender = patient.gender || 'Unknown';
@@ -80,12 +57,11 @@ export default function PatientSidebar({ patients, selectedPatient, onSelectPati
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-[12px]">
                     <Image
-                      src={getPatientImage(patient)}
+                      src={patient.profile_picture || ''}
                       alt={patient.name}
                       width={48}
                       height={48}
                       className="w-[40px] md:w-[48px] h-[40px] md:h-[48px] rounded-full object-cover"
-                      unoptimized={patient.profile_picture?.startsWith('http')}
                     />
                     <div>
                       <p className="font-bold text-[13px] md:text-[14px] leading-[19px] text-[#072635] font-['Manrope'] tracking-[0px]">

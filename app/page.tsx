@@ -78,7 +78,7 @@ export default function Home() {
           </div>
 
           {/* Main Content Area */}
-          <main className="flex-1 overflow-y-auto custom-scrollbar mt-[0] lg:mt-[18px] mb-[12px]">
+          <main className="flex-1 overflow-y-auto custom-scrollbar lg:mt-[0] mb-[12px]">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-[24px] md:gap-[32px]">
               {/* Middle Column */}
               <div className="lg:col-span-2 space-y-[24px] md:space-y-[32px]">

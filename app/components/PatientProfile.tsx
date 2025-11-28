@@ -8,31 +8,7 @@ interface PatientProfileProps {
   patient: Patient | null;
 }
 
-// Fallback images for patients without profile_picture
-const patientImages: { [key: string]: string } = {
-  'Emily Williams': '/assets/imgs/patients/Layer 8.png',
-  'Ryan Johnson': '/assets/imgs/patients/Layer 1.png',
-  'Brandon Mitchell': '/assets/imgs/patients/Layer 3.png',
-  'Jessica Taylor': '/assets/imgs/patients/Layer 2.png',
-  'Samantha Johnson': '/assets/imgs/patients/Layer 6.png',
-  'Ashley Martinez': '/assets/imgs/patients/Layer 12.png',
-  'Olivia Brown': '/assets/imgs/patients/Layer 10.png',
-  'Tyler Davis': '/assets/imgs/patients/Layer 9.png',
-  'Kevin Anderson': '/assets/imgs/patients/Layer 4.png',
-  'Dylan Thompson': '/assets/imgs/patients/Layer 5.png',
-  'Nathan Evans': '/assets/imgs/patients/Layer 7.png',
-  'Mike Nolan': '/assets/imgs/patients/pexels-photo-1222271.png',
-};
-
 export default function PatientProfile({ patient }: PatientProfileProps) {
-  const getPatientImage = (patient: Patient): string => {
-    // Use profile_picture from API if available, otherwise use fallback
-    if (patient.profile_picture) {
-      return patient.profile_picture;
-    }
-    return patientImages[patient.name] || '/assets/imgs/patients/Layer 2.png';
-  };
-
   if (!patient) {
     return (
       <div className="bg-white rounded-lg shadow-sm p-6">
@@ -57,7 +33,7 @@ export default function PatientProfile({ patient }: PatientProfileProps) {
     <div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
       <div className="flex flex-col items-center">
         <Image
-          src={getPatientImage(patient)}
+          src={patient.profile_picture || ''}
           alt="Patient Profile"
           width={200}
           height={200}
