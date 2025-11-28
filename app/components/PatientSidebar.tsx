@@ -9,6 +9,7 @@ interface PatientSidebarProps {
   onSelectPatient: (patient: Patient) => void;
 }
 
+// Fallback images for patients without profile_picture
 const patientImages: { [key: string]: string } = {
   'Emily Williams': '/assets/imgs/patients/Layer 8.png',
   'Ryan Johnson': '/assets/imgs/patients/Layer 1.png',
@@ -25,15 +26,22 @@ const patientImages: { [key: string]: string } = {
 };
 
 export default function PatientSidebar({ patients, selectedPatient, onSelectPatient }: PatientSidebarProps) {
-  const getPatientImage = (name: string): string => {
-    return patientImages[name] || '/assets/imgs/patients/Layer 2.png';
+  const getPatientImage = (patient: Patient): string => {
+    // Use profile_picture from API if available, otherwise use fallback
+    if (patient.profile_picture) {
+      return patient.profile_picture;
+    }
+    return patientImages[patient.name] || '/assets/imgs/patients/Layer 2.png';
   };
 
   const getGenderAndAge = (patient: Patient): string => {
     const gender = patient.gender || 'Unknown';
-    const age = patient.date_of_birth 
-      ? new Date().getFullYear() - new Date(patient.date_of_birth).getFullYear()
-      : 'N/A';
+    // Use age from API if available, otherwise calculate from date_of_birth
+    const age = patient.age !== undefined 
+      ? patient.age 
+      : (patient.date_of_birth 
+          ? new Date().getFullYear() - new Date(patient.date_of_birth).getFullYear()
+          : 'N/A');
     return `${gender}, ${age}`;
   };
 
@@ -72,11 +80,12 @@ export default function PatientSidebar({ patients, selectedPatient, onSelectPati
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-[12px]">
                     <Image
-                      src={getPatientImage(patient.name)}
+                      src={getPatientImage(patient)}
                       alt={patient.name}
                       width={48}
                       height={48}
                       className="w-[40px] md:w-[48px] h-[40px] md:h-[48px] rounded-full object-cover"
+                      unoptimized={patient.profile_picture?.startsWith('http')}
                     />
                     <div>
                       <p className="font-bold text-[13px] md:text-[14px] leading-[19px] text-[#072635] font-['Manrope'] tracking-[0px]">

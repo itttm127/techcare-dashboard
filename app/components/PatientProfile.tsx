@@ -8,6 +8,7 @@ interface PatientProfileProps {
   patient: Patient | null;
 }
 
+// Fallback images for patients without profile_picture
 const patientImages: { [key: string]: string } = {
   'Emily Williams': '/assets/imgs/patients/Layer 8.png',
   'Ryan Johnson': '/assets/imgs/patients/Layer 1.png',
@@ -24,8 +25,12 @@ const patientImages: { [key: string]: string } = {
 };
 
 export default function PatientProfile({ patient }: PatientProfileProps) {
-  const getPatientImage = (name: string): string => {
-    return patientImages[name] || '/assets/imgs/patients/Layer 2.png';
+  const getPatientImage = (patient: Patient): string => {
+    // Use profile_picture from API if available, otherwise use fallback
+    if (patient.profile_picture) {
+      return patient.profile_picture;
+    }
+    return patientImages[patient.name] || '/assets/imgs/patients/Layer 2.png';
   };
 
   if (!patient) {
@@ -52,11 +57,12 @@ export default function PatientProfile({ patient }: PatientProfileProps) {
     <div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
       <div className="flex flex-col items-center">
         <Image
-          src={getPatientImage(patient.name)}
+          src={getPatientImage(patient)}
           alt="Patient Profile"
           width={200}
           height={200}
           className="w-[150px] md:w-[200px] h-[150px] md:h-[200px] mb-[12px] rounded-full object-cover"
+          unoptimized={patient.profile_picture?.startsWith('http')}
         />
         <h3 className="font-extrabold text-[20px] md:text-[24px] leading-[33px] text-[#072635] font-['Manrope'] tracking-[0px] text-center p-[12px]">
           {patient.name || '--- --- ---'}

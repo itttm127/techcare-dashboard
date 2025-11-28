@@ -50,8 +50,10 @@ export interface DiagnosticItem {
 
 export interface Patient {
   name: string;
-  date_of_birth: string;
   gender: string;
+  age?: number;
+  profile_picture?: string;
+  date_of_birth: string;
   phone_number: string;
   emergency_contact: string;
   insurance_type: string;
